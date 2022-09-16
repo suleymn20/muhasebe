@@ -17,9 +17,16 @@ class Homepage extends Controller
 
     public function single($category,$slug){
       $categories=Category::inRandomOrder()->get();
-      $category=Category::whereSlug($slug)->first() ?? abort(404);
-      $article=Article::whereSlug($slug)->whereCategoryId($category->id)->first() ?? abort(404);
+      $category=Category::whereSlug($category)->first() ?? abort(403,'kategori yok');
+      $article=Article::whereSlug($slug)->whereCategoryId($category->id)->first() ?? abort(403,'yazı yok');
       $article->increment('hit');
       return view('front.single',compact('categories','article'));
+    }
+
+    public function category($slug){
+      $category=Category::whereSlug($slug)->first() ?? abort(403,'kategori yok');
+      $categories=Category::inRandomOrder()->get();
+      $articles=Article::where('category_id',$category->id)->orderBy('created_at','DESC')->get();
+      return view('front.category',compact('category','articles','categories'));
     }
 }
