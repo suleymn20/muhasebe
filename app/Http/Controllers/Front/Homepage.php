@@ -11,7 +11,7 @@ class Homepage extends Controller
 {
     public function index(){
       $categories=Category::inRandomOrder()->get();
-      $articles=Article::orderBy('created_at','DESC')->get();
+      $articles=Article::orderBy('created_at','DESC')->paginate(2);
       return view('front.homepage',compact('categories','articles'));
     }
 
@@ -26,7 +26,7 @@ class Homepage extends Controller
     public function category($slug){
       $category=Category::whereSlug($slug)->first() ?? abort(403,'kategori yok');
       $categories=Category::inRandomOrder()->get();
-      $articles=Article::where('category_id',$category->id)->orderBy('created_at','DESC')->get();
+      $articles=Article::where('category_id',$category->id)->orderBy('created_at','DESC')->paginate(2);
       return view('front.category',compact('category','articles','categories'));
     }
 }
