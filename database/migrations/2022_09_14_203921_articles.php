@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('image');
             $table->longText('content');
             $table->string('hit')->default(0);
+            $table->string('status')->default(0);
             $table->string('slug');
             $table->timestamps();
             $table->foreign('category_id')
